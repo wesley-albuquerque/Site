@@ -5,6 +5,8 @@ const bairro = document.getElementById('bairro');
 const localidade = document.getElementById('cidade');
 const uf = document.getElementById('estado');
 const pais = document.getElementById('pais');
+var fantasia = document.getElementById("divfantasia");
+
 
 function cepOnchange(){
 
@@ -39,6 +41,8 @@ function onchangeCPF_CNPJ(){
         if(validaCPF(cpf_cnpjReq)){
             cpf_cnpjReq = cpf_cnpjReq.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
             cpf_cnpj.value = cpf_cnpjReq;
+            fantasia.style.display = "none";
+
         }
         else{
             alert("CPF inválido")
@@ -50,7 +54,6 @@ function onchangeCPF_CNPJ(){
         if(validaCNPJ(cpf_cnpjReq)){
             cpf_cnpjReq = cpf_cnpjReq.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
             cpf_cnpj.value = cpf_cnpjReq;
-            var fantasia = document.getElementById("divfantasia");
             fantasia.style.display = "inline";
         }
         else{
@@ -115,5 +118,17 @@ function validaCNPJ(cnpj) {
     let digito2 = (11 - soma % 11) % 10;
   
     return (parseInt(cnpj.charAt(12)) === digito1 && parseInt(cnpj.charAt(13)) === digito2);
+  }
+
+  function onchangeEmail() {
+    var email = document.getElementById("email");
+    var emailValida = email.value;
+    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(email.value != "")
+    if(!regexEmail.test(emailValida)){
+        alert("E-mail inválido");
+        email.focus();
+    };
+
   }
   
