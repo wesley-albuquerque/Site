@@ -1,0 +1,42 @@
+.corTexto {
+    color: rgb(58, 233, 254);
+    text-align: center;
+  }
+input {
+    display: block; 
+    width: 50%; 
+    margin: 0 auto; 
+ 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  
+}
+button {
+    display: block; 
+    width: 50%; 
+    margin: 0 auto; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+}
+
+label{
+    width: 50%;
+    margin: 0 auto;
+  display: flex; 
+  justify-content:left; 
+  align-items:center;
+  
+  
+}
+
+h4{
+    width: 50%; 
+    margin: 0 auto; 
+  display: flex; 
+  justify-content: left; 
+  align-items: center; 
+  font-size: 25px;
+}
+
