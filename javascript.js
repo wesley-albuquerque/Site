@@ -131,4 +131,59 @@ function validaCNPJ(cnpj) {
     };
 
   }
-  
+
+  function enviarDados() {
+    
+    // Cria um objeto com os valores do formulário
+    
+      var cpf_cnpj = document.getElementById("cpf_cnpj").value;
+      var nome = document.getElementById("nome").value;
+      var fantasia = document.getElementById("fantasia").value;
+      var email = document.getElementById("email").value;
+      var telefone = document.getElementById("telefone").value;
+      var celular = document.getElementById("celular").value;
+      var CEP = document.getElementById("CEP").value;
+      var logradouro = document.getElementById("logradouro").value;
+      var complemento = document.getElementById("complemento").value;
+      var numero = document.getElementById("numero").value;
+      var bairro = document.getElementById("bairro").value;
+      var cidade = document.getElementById("cidade").value;
+      var estado = document.getElementById("estado").value;
+      var pais = document.getElementById("pais").value;
+    
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Accept", "*/*");
+      myHeaders.append("Accept-Encoding", "gzip, deflate, br");
+      myHeaders.append("Connection", "keep-alive");
+
+      
+      var raw = JSON.stringify({
+        "cpf_cnpj": "123.456.789-03",
+        "nome": "Exemplo de Nome",
+        "fantasia": "Exemplo de Nome Fantasia",
+        "email": "exemplo@exemplo.com",
+        "telefone": "(00) 0000-0000",
+        "celular": "(00) 00000-0000",
+        "CEP": "00000-000",
+        "logradouro": "Exemplo de Logradouro",
+        "complemento": "Exemplo de Complemento",
+        "numero": "123",
+        "bairro": "Exemplo de Bairro",
+        "cidade": "Exemplo de Cidade",
+        "estado": "Ex",
+        "pais": "Brasil"
+      });
+      
+      var requestOptions = {
+        method: 'OPTIONS',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+      
+      fetch("http://127.0.0.1:5000/inserir-dados", requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+    }
