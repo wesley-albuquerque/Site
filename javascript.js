@@ -6,6 +6,7 @@ const localidade = document.getElementById('cidade');
 const uf = document.getElementById('estado');
 const pais = document.getElementById('pais');
 var fantasia = document.getElementById("divfantasia");
+var divResultado = document.getElementById("divResultado");
 
 
 function cepOnchange(){
@@ -151,39 +152,183 @@ function validaCNPJ(cnpj) {
       var estado = document.getElementById("estado").value;
       var pais = document.getElementById("pais").value;
     
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("Accept", "*/*");
-      myHeaders.append("Accept-Encoding", "gzip, deflate, br");
-      myHeaders.append("Connection", "keep-alive");
+  // WARNING: For POST requests, body is set to null by browsers.
+  var data = JSON.stringify({
+    cpf_cnpj: cpf_cnpj,
+    nome: nome,
+    fantasia: fantasia,
+    email: email,
+    telefone: telefone,
+    celular: celular,
+    CEP: CEP,
+    logradouro: logradouro,
+    complemento: complemento,
+    numero: numero,
+    bairro: bairro,
+    cidade: cidade,
+    estado: estado,
+    pais: pais
+  });
+  
+  var xhr = new XMLHttpRequest();
+  xhr.withCredentials = true;
+  
+  xhr.addEventListener("readystatechange", function() {
+    if(this.readyState === 4) {
+      console.log(this.responseText);
+      var status =xhr.status;
+      alert(this.responseText);
 
-      
-      var raw = JSON.stringify({
-        "cpf_cnpj": "123.456.789-03",
-        "nome": "Exemplo de Nome",
-        "fantasia": "Exemplo de Nome Fantasia",
-        "email": "exemplo@exemplo.com",
-        "telefone": "(00) 0000-0000",
-        "celular": "(00) 00000-0000",
-        "CEP": "00000-000",
-        "logradouro": "Exemplo de Logradouro",
-        "complemento": "Exemplo de Complemento",
-        "numero": "123",
-        "bairro": "Exemplo de Bairro",
-        "cidade": "Exemplo de Cidade",
-        "estado": "Ex",
-        "pais": "Brasil"
-      });
-      
-      var requestOptions = {
-        method: 'OPTIONS',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
-      };
-      
-      fetch("http://127.0.0.1:5000/inserir-dados", requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
     }
+  });
+  xhr.open("POST", "http://127.0.0.1:5000/inserir-dados", true);
+  xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+
+  xhr.send(data);
+  
+}
+
+function deletaCliente() {
+    
+  // Cria um objeto com os valores do formulário
+  if(confirm("Confirma a exclusão?")){
+    var cpf_cnpj = document.getElementById("rCpf_cnpj").value;
+    var data = JSON.stringify({cpf_cnpj: cpf_cnpj});
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function() {
+      if(this.readyState === 4) {
+        console.log(this.responseText);
+        alert(this.responseText);
+        }
+      });
+    xhr.open("DELETE", "http://127.0.0.1:5000/delete-dados", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+
+    xhr.send(data);
+    divResultado.style.display = "none";
+  }
+  
+    
+
+}
+    
+function pesquisar(){
+  var pesquisar = document.getElementById("pesquisar");
+  var rCpf_cnpj = document.getElementById("rCpf_cnpj");
+  var rNomeRazao = document.getElementById("rNomeRazao");
+  var rNomeFantasia = document.getElementById("rNomeFantasia");
+  var rTelefone = document.getElementById("rTelefone");
+  var rCelular = document.getElementById("rCelular");
+  var rEmail = document.getElementById("rEmail");
+  var rCep = document.getElementById("rCep");
+  var rLogradouro = document.getElementById("rLogradouro");
+  var rComplemento = document.getElementById("rComplemento");
+  var rNumero = document.getElementById("rNumero");
+  var rBairro = document.getElementById("rBairro");
+  var rCidade = document.getElementById("rCidade");
+  var rEstado = document.getElementById("rEstado");
+  var rPais = document.getElementById("rPais");
+
+  //var titulo = document.getElementById("rTitulo");
+  // pesquisar = pesquisar.replace(/\D/g, "")
+  // if(pesquisar.length == 11){
+  //   if(validaCPF(pesquisar)){
+
+  //   }
+  // }
+  // WARNING: For POST requests, body is set to null by browsers.
+  var data = JSON.stringify({cpf_cnpj: pesquisar.value});
+  
+  var xhr = new XMLHttpRequest();
+  xhr.withCredentials = true;
+  
+  xhr.addEventListener("readystatechange", function() {
+    if(this.readyState === 4) {
+      console.log(this.responseText);
+      if(this.responseText != "CPF não encontrado"){
+        jsonResponse = JSON.parse(this.responseText)
+        divResultado.style.display = "inline";
+        rCpf_cnpj.value = jsonResponse[0].cpf_cnpj;
+        rNomeRazao.value = jsonResponse[0].nome_razao_social;
+        rNomeFantasia.value = jsonResponse[0].nome_fantasia;
+        rTelefone.value = jsonResponse[0].telefone;
+        rCelular.value = jsonResponse[0].celular;
+        rEmail.value = jsonResponse[0].email;
+        rCep.value = jsonResponse[0].cep;
+        rLogradouro.value = jsonResponse[0].logradouro;
+        rComplemento.value = jsonResponse[0].complemento;
+        rNumero.value = jsonResponse[0].numero;
+        rBairro.value = jsonResponse[0].bairro;
+        rCidade.value = jsonResponse[0].cidade;
+        rEstado.value = jsonResponse[0].estado;
+        rPais.value = jsonResponse[0].pais;
+
+      }
+      else{
+        alert(this.responseText);
+      }
+    
+    }
+  });
+  xhr.open("POST", "http://127.0.0.1:5000/consulta-dados", true);
+  xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+  
+  xhr.send(data);
+
+
+}
+  
+function atualizaDados() {
+    
+    var cpf_cnpj = document.getElementById("rCpf_cnpj").value;
+    var nome = document.getElementById("rNomeRazao").value;
+    var fantasia = document.getElementById("rNomeFantasia").value;
+    var email = document.getElementById("rEmail").value;
+    var telefone = document.getElementById("rTelefone").value;
+    var celular = document.getElementById("rCelular").value;
+    var CEP = document.getElementById("rCep").value;
+    var logradouro = document.getElementById("rLogradouro").value;
+    var complemento = document.getElementById("rComplemento").value;
+    var numero = document.getElementById("rNumero").value;
+    var bairro = document.getElementById("rBairro").value;
+    var cidade = document.getElementById("rCidade").value;
+    var estado = document.getElementById("rEstado").value;
+    var pais = document.getElementById("rPais").value;
+  
+var data = JSON.stringify({
+  cpf_cnpj: cpf_cnpj,
+  nome: nome,
+  fantasia: fantasia,
+  email: email,
+  telefone: telefone,
+  celular: celular,
+  CEP: CEP,
+  logradouro: logradouro,
+  complemento: complemento,
+  numero: numero,
+  bairro: bairro,
+  cidade: cidade,
+  estado: estado,
+  pais: pais
+});
+
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.addEventListener("readystatechange", function() {
+  if(this.readyState === 4) {
+    console.log(this.responseText);
+    var status =xhr.status;
+    alert(this.responseText);
+
+  }
+});
+xhr.open("POST", "http://127.0.0.1:5000/atualiza-dados", true);
+xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+
+xhr.send(data);
+
+}

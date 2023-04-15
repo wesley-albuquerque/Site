@@ -10,12 +10,28 @@
     <h1 class="corTexto">Clientes</h1>
 
     <input placeholder="Pesquisar pelo nome" type="text" id="pesquisar" name="pesquisar" maxlength="250">
-    <button type="submit">Buscar</button>
+    <button onclick="pesquisar()">Buscar</button>
 
-    <div>
-        <h2 style="display: none">Resultado</h2><br>
+    <div id="divResultado" style="display: none;">
+        <h4>Resultado</h4><br>
+        <input id="rCpf_cnpj" type="text" readonly="true">
+        <input id="rNomeRazao" type="text">
+        <input id="rNomeFantasia" type="text">
+        <input id="rTelefone" type="text">
+        <input id="rCelular" type="text">
+        <input id="rEmail" type="text">
+        <input id="rCep" type="text">
+        <input id="rLogradouro" type="text">
+        <input id="rComplemento" type="text">
+        <input id="rNumero" type="text">
+        <input id="rBairro" type="text">
+        <input id="rCidade" type="text">
+        <input id="rEstado" type="text">
+        <input id="rPais" type="text">
+        <button onclick="atualizaDados()">Salvar</button>
+        <button onclick="deletaCliente()">Excluir</button>
     </div>
-    <a href="cadastro.html"><button>Cadastrar</button></a>
-
+    <a href="cadastro.html"><button>Novo Cadastro</button></a>
+    <script src="javascript.js"></script>
   </body>
 </html>
