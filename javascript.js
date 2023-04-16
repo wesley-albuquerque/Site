@@ -132,6 +132,15 @@ function validaCNPJ(cnpj) {
     };
 
   }
+  document.querySelector('form').addEventListener('submit', validarFormulario);
+  function validarFormulario(event) {
+    event.preventDefault(); // previne o envio automático do formulário
+  
+    // valida os campos do formulário aqui
+    // por exemplo, você pode verificar se os campos estão preenchidos corretamente, se o CPF/CNPJ é válido, etc.
+  
+    enviarDados(); // se o formulário estiver válido, envia os dados
+  }
 
   function enviarDados() {
     
@@ -176,7 +185,6 @@ function validaCNPJ(cnpj) {
   xhr.addEventListener("readystatechange", function() {
     if(this.readyState === 4) {
       console.log(this.responseText);
-      var status =xhr.status;
       alert(this.responseText);
 
     }
@@ -185,6 +193,7 @@ function validaCNPJ(cnpj) {
   xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
 
   xhr.send(data);
+
   
 }
 
@@ -232,14 +241,37 @@ function pesquisar(){
   var rEstado = document.getElementById("rEstado");
   var rPais = document.getElementById("rPais");
 
-  //var titulo = document.getElementById("rTitulo");
-  // pesquisar = pesquisar.replace(/\D/g, "")
-  // if(pesquisar.length == 11){
-  //   if(validaCPF(pesquisar)){
+  
+  pesquisar.value = pesquisar.value.replace(/\D/g, "")
+  if(pesquisar.value.length == 11){
+    if(validaCPF(pesquisar.value)){
+      pesquisar.value = pesquisar.value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+    }
+    else{
+      alert("CPF inválido")
+      divResultado.style.display = "none";
 
-  //   }
-  // }
-  // WARNING: For POST requests, body is set to null by browsers.
+      return
+    }
+    
+  }
+  else if(pesquisar.value.length == 14){
+    if(validaCNPJ(pesquisar.value)){
+      pesquisar.value = pesquisar.value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+    }
+    else{
+      alert("CNPJ inválido")
+      divResultado.style.display = "none";
+      return
+    }
+  }
+  else{
+    alert("Digite um CNPJ ou CPF")
+    divResultado.style.display = "none";
+    pesquisar.focus();
+    return
+  }
+
   var data = JSON.stringify({cpf_cnpj: pesquisar.value});
   
   var xhr = new XMLHttpRequest();
@@ -269,6 +301,8 @@ function pesquisar(){
       }
       else{
         alert(this.responseText);
+        divResultado.style.display = "none";
+
       }
     
     }
