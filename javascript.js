@@ -240,7 +240,8 @@ function pesquisar(){
   var rCidade = document.getElementById("rCidade");
   var rEstado = document.getElementById("rEstado");
   var rPais = document.getElementById("rPais");
-
+  var divfantasia = document.getElementById("divfantasia");
+  divfantasia.style.display = "none";
   
   pesquisar.value = pesquisar.value.replace(/\D/g, "")
   if(pesquisar.value.length == 11){
@@ -286,6 +287,11 @@ function pesquisar(){
         rCpf_cnpj.value = jsonResponse[0].cpf_cnpj;
         rNomeRazao.value = jsonResponse[0].nome_razao_social;
         rNomeFantasia.value = jsonResponse[0].nome_fantasia;
+
+        if (rNomeFantasia.value != "" & rNomeFantasia.value != null){
+            divfantasia.style.display = "inline";
+        }
+
         rTelefone.value = jsonResponse[0].telefone;
         rCelular.value = jsonResponse[0].celular;
         rEmail.value = jsonResponse[0].email;
